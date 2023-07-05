@@ -40,8 +40,8 @@
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="porcentagemComissao">Porcentagem Comissão</label>
-                                        <input type="number" class="form-control" th:field="*{porcentagemComissao}">
-                                    </div>
+                                        <input type="number" class="form-control" th:field="*{porcentagemComissao}"  min="0" max="100">
+                                    </div> 
                                 </div>
                             </div>
                             <div class="row">

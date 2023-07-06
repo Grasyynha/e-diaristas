@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.treinaweb.ediaristas.core.enums.Icone;
 import br.com.treinaweb.ediaristas.core.models.Servico;
 import br.com.treinaweb.ediaristas.core.repositories.ServicoRepository;
+import br.com.treinaweb.ediaristas.web.dtos.ServicoForm;
+import br.com.treinaweb.ediaristas.web.mappers.WebServicoMapper;
 
 @Controller
 @RequestMapping("/admin/servicos")
@@ -19,6 +21,9 @@ public class ServicoController {
 
     @Autowired
     private ServicoRepository repository;
+
+    @Autowired
+    private WebServicoMapper mapper;
 
     @GetMapping
     public ModelAndView buscarTodos() {
@@ -31,13 +36,14 @@ public class ServicoController {
     public ModelAndView cadastrar() {
         var modelAndView = new ModelAndView("admin/servico/form");
 
-        modelAndView.addObject("servico", new Servico());
+        modelAndView.addObject("form", new ServicoForm());
         
         return modelAndView;
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(Servico servico){
+    public String cadastrar(ServicoForm form){
+        var servico = mapper.toModel(form);
         repository.save(servico);
 
         return "redirect:/admin/servicos";
@@ -47,13 +53,18 @@ public class ServicoController {
 public ModelAndView editar(@PathVariable Long id) {
     var modelAndView = new ModelAndView("admin/servico/form");
 
-    modelAndView.addObject("servico", repository.getReferenceById(id));
+    var servico = repository.getReferenceById(id);
+    var form = mapper.toForm(servico);
+    modelAndView.addObject("form", form);
 
     return modelAndView;
 }
 
 @PostMapping("/{id}/editar")
-public String editar(@PathVariable Long id, Servico servico) {
+public String editar(@PathVariable Long id, ServicoForm form) {
+    var servico = mapper.toModel(form); 
+    servico.setId(id);
+    
     repository.save(servico);
 
     return "redirect:/admin/servicos";

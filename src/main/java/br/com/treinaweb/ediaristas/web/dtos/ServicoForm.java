@@ -2,6 +2,9 @@ package br.com.treinaweb.ediaristas.web.dtos;
 
 import java.math.BigDecimal;
 
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 import br.com.treinaweb.ediaristas.core.enums.Icone;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +30,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+    @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorMinimo;
 
     @NotNull
@@ -36,6 +40,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal porcentagemComissao;
 
      @NotNull
@@ -44,6 +49,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorQuarto;
 
     
@@ -53,6 +59,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorSala;
 
     @NotNull
@@ -61,6 +68,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorBanheiro;
 
  
@@ -70,6 +78,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorCozinha;
 
     @NotNull
@@ -78,6 +87,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorQuintal;
 
     @NotNull
@@ -86,6 +96,7 @@ public class ServicoForm {
 
     @NotNull
     @PositiveOrZero
+     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     private BigDecimal valorOutros;
 
     

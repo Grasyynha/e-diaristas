@@ -57,6 +57,7 @@ public class WebServicoMapper {
         form.setHorasBanheiro(model.getHorasBanheiro());
         form.setValorBanheiro(model.getValorBanheiro());
         form.setHorasCozinha(model.getHorasCozinha());
+        form.setValorCozinha(model.getValorCozinha());
         form.setHorasQuintal(model.getHorasQuintal());
         form.setValorQuintal(model.getValorQuintal());
         form.setHorasOutros(model.getHorasOutros());

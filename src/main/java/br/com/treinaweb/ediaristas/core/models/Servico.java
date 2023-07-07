@@ -10,7 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -64,7 +63,7 @@ public class Servico {
     @Column(name = "horas_cozinha", nullable = false)
     private Integer horasCozinha;
 
-     @Column(name = "valor_cpzinha", nullable = false)
+     @Column(name = "valor_cozinha", nullable = false)
     private BigDecimal valorCozinha;
 
     @Column(name = "horas_quintal", nullable = false)

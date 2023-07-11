@@ -10,6 +10,7 @@ import br.com.treinaweb.ediaristas.core.exceptions.UsuarioNaoEncontradoException
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.core.repositories.UsuarioRepository;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
+import br.com.treinaweb.ediaristas.web.dtos.UsuarioEdicaoForm;
 import br.com.treinaweb.ediaristas.web.mappers.WebUsuarioMapper;
 
 @Service
@@ -38,6 +39,11 @@ public class WebUsuarioService {
         var mensagem = String.format("Usuario com ID %d não encontrado", id);
         return repository.findById(id)
         .orElseThrow(() -> new UsuarioNaoEncontradoException(mensagem));
+    }
+    public UsuarioEdicaoForm buscarFormPorId(Long id) {
+        var usuario = buscarPorId(id);
+
+        return mapper.toForm(usuario);
     }
 
     public void excluirPorId(Long id) {

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.treinaweb.ediaristas.core.exceptions.SenhasNaoConferemException;
+
+import br.com.treinaweb.ediaristas.core.exceptions.ValidacaoException;
 import br.com.treinaweb.ediaristas.web.dtos.FlashMessage;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioEdicaoForm;
@@ -58,7 +59,7 @@ public class UsuarioController {
             attrs.addFlashAttribute("alert", new FlashMessage("alert-success","Usuario cadastrado com sucesso"));
 
 
-        } catch (SenhasNaoConferemException e) {
+        } catch (ValidacaoException e) {
             result.addError(e.getFieldError());
             return "admin/usuario/cadastro-form";
         }
@@ -87,10 +88,19 @@ public class UsuarioController {
                             if (result.hasErrors()) {
                                 return "admin/usuario/edicao-form";
                             }
+                            
+                            try {
+                                 service.editar(edicaoForm, id);
+                                 attrs.addFlashAttribute("alert", new FlashMessage("alert-success","Usuario editado com sucesso!"));
 
-                            service.editar(edicaoForm, id);
-                            attrs.addFlashAttribute("alert", new FlashMessage("alert-success","Usuario editado com sucesso!"));
 
+                            } catch (ValidacaoException e) {
+                                result.addError(e.getFieldError());
+                                 return "admin/usuario/edicao-form";
+                            
+                            }
+
+                           
                             return "redirect:/admin/usuarios";
 
                          }

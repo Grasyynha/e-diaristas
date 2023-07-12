@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 
 import br.com.treinaweb.ediaristas.core.enums.TipoUsuario;
 import br.com.treinaweb.ediaristas.core.exceptions.SenhasNaoConferemException;
+import br.com.treinaweb.ediaristas.core.exceptions.UsuarioJaCadastradoException;
 import br.com.treinaweb.ediaristas.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.core.repositories.UsuarioRepository;
@@ -39,9 +40,12 @@ public class WebUsuarioService {
             throw new SenhasNaoConferemException(mensagem, fieldError);
         }
 
+       
         var model = mapper.toModel(form);
 
         model.setTipoUsuario(TipoUsuario.ADMIN);
+
+        validarCamposUnicos(model);
 
         return repository.save(model);
 
@@ -60,10 +64,13 @@ public class WebUsuarioService {
     public Usuario editar(UsuarioEdicaoForm form, Long id) {
         var usuario = buscarPorId(id);
 
+      
         var model = mapper.toModel(form);
         model.setId(usuario.getId());
         model.setSenha(usuario.getSenha());
         model.setTipoUsuario(usuario.getTipoUsuario());
+
+        validarCamposUnicos(model);
 
         return repository.save(model);
 
@@ -74,6 +81,18 @@ public class WebUsuarioService {
 
         repository.delete(usuario);
 
+    }
+    private void validarCamposUnicos(Usuario usuario) {
+            repository.findByEmail(usuario.getEmail()).ifPresent((usuarioEncontrado) -> {
+            if(!usuarioEncontrado.equals(usuario)) {
+             var mensagem = "Já existe um usuario cadastrado com esse email";
+             var fieldError = new FieldError(usuario.getClass().getName(), "email", usuario.getEmail(), false, null, null, mensagem);            
+        
+            throw new UsuarioJaCadastradoException(mensagem, fieldError);
+            }
+            
+
+        });
     }
 }
 

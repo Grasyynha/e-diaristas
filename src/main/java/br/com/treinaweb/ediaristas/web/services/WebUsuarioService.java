@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.FieldError;
 
 import br.com.treinaweb.ediaristas.core.enums.TipoUsuario;
+import br.com.treinaweb.ediaristas.core.exceptions.SenhasNaoConferemException;
 import br.com.treinaweb.ediaristas.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.core.repositories.UsuarioRepository;
@@ -27,6 +29,15 @@ public class WebUsuarioService {
     }
 
     public Usuario cadastrar(UsuarioCadastroForm form) {
+        var senha = form.getSenha();
+        var confirmacaoSenha = form.getConfirmacaoSenha();
+
+        if(!senha.equals(confirmacaoSenha)) {
+            var mensagem = "os dois campos de senha não conferem";
+            var fieldError = new FieldError(form.getClass().getName(), "confirmacaoSenha", form.getConfirmacaoSenha(), false, null, null, mensagem);
+        
+            throw new SenhasNaoConferemException(mensagem, fieldError);
+        }
 
         var model = mapper.toModel(form);
 
@@ -44,6 +55,18 @@ public class WebUsuarioService {
         var usuario = buscarPorId(id);
 
         return mapper.toForm(usuario);
+    }
+
+    public Usuario editar(UsuarioEdicaoForm form, Long id) {
+        var usuario = buscarPorId(id);
+
+        var model = mapper.toModel(form);
+        model.setId(usuario.getId());
+        model.setSenha(usuario.getSenha());
+        model.setTipoUsuario(usuario.getTipoUsuario());
+
+        return repository.save(model);
+
     }
 
     public void excluirPorId(Long id) {
